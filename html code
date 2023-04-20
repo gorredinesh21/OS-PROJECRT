@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <script>
+       var file="GET.txt"
+       var rawFile = new XMLHttpRequest()
+       var jsonData
+       rawFile.open("GET", file, false)
+       rawFile.onreadystatechange = function ()
+       {
+           if(rawFile.readyState === 4)
+           {
+               if(rawFile.status === 200 || rawFile.status == 0)
+               {
+                   var allText = rawFile.responseText;
+                   async function logJSONData() {
+                   const response = await fetch(allText);
+                   jsonData = await response.json();
+                   console.log(jsonData);
+                   }
+                   logJSONData().then(()=>{
+                       var output = '';
+                       for (var property in jsonData) {
+                       output +="+"+"=>"+property.charAt(0).toUpperCase()+property.slice(1)+' : ' + jsonData[property];}
+                       document.cookie=document.cookie+"Name : "+allText+"+"+"Information : "+output+"++"
+                       var a=document.cookie
+                       let b=""
+                       for(var i=0;i<a.length;i++)
+                       {
+                           if(a.charAt(i)=="+")
+                               b+='\n'
+                           else
+                               b+=a[i]
+                       }
+                          
+                       document.getElementById("info").innerText=b
+                   })
+               }
+           }
+       }
+   rawFile.send(null);
+   </script>
+</head>
+<body>
+   <h1>Information</h1>
+   <div id ="info"></div>
+</body>
+</html>
